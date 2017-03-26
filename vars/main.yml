@@ -21,6 +21,7 @@ homebrew_installed_packages:
   - composer
   - git-extras
   - stow
+  - pandoc
 
 homebrew_taps:
   - caskroom/cask
