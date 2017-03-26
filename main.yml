@@ -1,6 +1,6 @@
 ---
 - hosts: localhost
-  user: jeslopcru
+  user: jesuslc
   connection: local
 
   vars_files:
@@ -8,3 +8,6 @@
 
   roles:
     - geerlingguy.homebrew
+    #- appearance
+    - dotfiles
+

@@ -28,6 +28,7 @@ homebrew_taps:
   - homebrew/php
 
 homebrew_cask_appdir: /Applications
+
 homebrew_cask_apps:
   - google-chrome
   - firefox
@@ -44,12 +45,42 @@ homebrew_cask_apps:
   - dropbox
   - android-file-transfer
   - vlc
-  - unrarx
   - mysqlworkbench
-  - taskwarrior-pomodoro
+  - tunnelblick
+
+dockitems_to_remove:
+  - Mail
+  - Contacts
+  - Notes
+  - Reminders
+  - Maps
+  - Photos
+  - Messages
+  - FaceTime
+  - iTunes
+  - iBooks
+  - App Store
+  - Calendar
+  - Siri
+
+dockitems_to_persist:
+  - name: Google Chrome
+    path: "/Applications/Google Chrome.app"
+    pos: 2
+  - name: PhpStorm
+    path: /Applications/PhpStorm.app
+    pos: 3
+  - name: iTerm2
+    path: /Applications/iTerm.app/
+    pos: 4
+  - name: Sublime
+    path: /Applications/Sublime Text.app/
+    pos: 5
+
+   
 
 npm_packages:
-  - grunt
+  - gulp
   - bower
   - sass
   - webpack

@@ -1,66 +1,28 @@
 ---
+
+- name: get oh-my-zsh script
+  get_url: url=http://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh dest=/tmp/oh-my-zsh.sh
+
+- name: change file permission to be executable
+  command: chmod +x /tmp/oh-my-zsh.sh
+
+- name: install zsh
+  script: /tmp/oh-my-zsh.sh
+
 - name: Clone dotfiles
-  git: repo=https://github.com/ricbra/dotfiles.git dest=/Users/richard/dotfiles recursive=yes update=no
+  git: repo=https://github.com/jeslopcru/dotfiles.git dest=~/dotfiles recursive=yes update=no
 
-- name: Get current Terminal profile.
-  shell: defaults read com.apple.Terminal 'Default Window Settings'
-  register: terminal_theme
-  changed_when: false
+- name: using custom zsh config
+  command: cd ~/dotfiles && stow zsh
 
-- name: Ensure custom Terminal profile is added.
-  shell: open files/Solarized-Dark.terminal
-  changed_when: false
-  when: "'Solarized-Dark' not in terminal_theme.stdout"
+- name: using custom vim config
+  command: cd ~/dotfiles && stow vim
 
-- name: Ensure custom Terminal profile is set as default.
-  shell: "{{ item }}"
-  with_items:
-    - defaults write com.apple.Terminal 'Default Window Settings' -string 'Solarized-Dark'
-    - defaults write com.apple.Terminal 'Startup Window Settings' -string 'Solarized-Dark'
-  changed_when: false
-  when: "'Solarized Dark ansi' not in terminal_theme.stdout"
-
-- name: Set zsh as shell
-  shell: defaults write com.apple.Terminal 'Shell' -string '/bin/zsh'
-
-- name: check if gvm is installed
-  shell: test -d /Users/richard/.gvm && echo "yes" || echo "no"
-  register: is_gvm_installed
-
-- name: download gvm
-  when: is_gvm_installed.stdout == "no"
-  get_url: url=https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer dest=/Users/richard/gvm_install.sh
-
-- name: install gvm
-  when: is_gvm_installed.stdout == "no"
-  command: bash /Users/richard/gvm_install.sh
-
-- name: Remove all crap from Dock
-  shell: dockutil --remove '{{ item }}'
-  ignore_errors: true
-  with_items: "{{ dockitems_to_remove  }}"
-
-- name: Check if items in dock exist
-  shell: dockutil --find '{{ item.name }}' || dockutil --add '{{ item.path }}'
-  with_items: "{{ dockitems_to_persist }}"
-
-- name: Fix order
-  shell: dockutil --move '{{ item.name }}' --position {{ item.pos }}
-  with_items: "{{ dockitems_to_persist }}"
-
-- name: Check if symfony is installed
-  stat: path=/usr/local/bin/symfony
-  register: sf
-
-- name: Download symfony installer
-  get_url: url=http://symfony.com/installer dest=/usr/local/bin/symfony
-  when: sf.stat.exists == false
-
-- name: Set permissions on symfony
-  file: path=/usr/local/bin/symfony mode=0755
+- name: using custom git config
+  command: cd ~/dotfiles && stow git
 
 - name: Set datetime zone
-  lineinfile: dest=/usr/local/etc/php/7.0/php.ini line="date.timezone=Europe/Amsterdam"
+  lineinfile: dest=/usr/local/etc/php/7.0/php.ini line="date.timezone=Europe/Madrid"
 
 - name: Install npm packages
   npm:  name={{ item }} global=yes
