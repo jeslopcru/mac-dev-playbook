@@ -22,6 +22,7 @@ homebrew_installed_packages:
   - git-extras
   - stow
   - pandoc
+  - httpie
 
 homebrew_taps:
   - caskroom/cask
